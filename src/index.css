@@ -305,3 +305,75 @@ img {
   background: linear-gradient(90deg, #f472b6, #ec4899, #db2777);
   animation: progress-fill 1.5s ease-out forwards;
 }
+
+/* Mobile Overflow & Performance Fix */
+html, body, #root {
+  max-width: 100vw;
+  overflow-x: hidden !important;
+}
+
+* {
+  max-width: 100%;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100% !important;
+  height: auto;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+a,
+button,
+div {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+section,
+div,
+main,
+header,
+footer {
+  min-width: 0;
+}
+
+/* Reduce Mobile Lag */
+@media (max-width: 768px) {
+  * {
+    scroll-behavior: auto !important;
+  }
+
+  .glass,
+  .glass-card {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+
+  * {
+    animation-duration: 0.4s !important;
+    transition-duration: 0.25s !important;
+  }
+
+  .animate-float,
+  .animate-gradient,
+  .animate-shimmer,
+  .animate-fire {
+    animation: none !important;
+  }
+
+  body {
+    transform: translateZ(0);
+    will-change: auto;
+  }
+}
