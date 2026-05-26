@@ -306,38 +306,32 @@ img {
   animation: progress-fill 1.5s ease-out forwards;
 }
 
-/* Mobile Overflow & Performance Fix */
-html, body, #root {
-  max-width: 100vw;
+
+/* ===== MOBILE OVERFLOW + PERFORMANCE FIX ===== */
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
   overflow-x: hidden !important;
+  position: relative;
 }
 
-* {
+*,
+*::before,
+*::after {
   max-width: 100%;
 }
 
 img,
-picture,
 video,
 canvas,
-svg {
+svg,
+iframe {
   max-width: 100% !important;
   height: auto;
-}
-
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-span,
-a,
-button,
-div {
-  word-break: break-word;
-  overflow-wrap: break-word;
+  display: block;
 }
 
 section,
@@ -348,32 +342,60 @@ footer {
   min-width: 0;
 }
 
-/* Reduce Mobile Lag */
+.container,
+[class*="container"] {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 @media (max-width: 768px) {
-  * {
-    scroll-behavior: auto !important;
+
+  body {
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
   }
 
+  * {
+    word-break: break-word;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span {
+    overflow-wrap: break-word;
+  }
+
+  /* Reduce lag on mobile */
+  .animate-float,
+  .animate-shimmer,
+  .animate-gradient,
+  .animate-fire {
+    animation-duration: 8s !important;
+  }
+
+  /* Reduce heavy blur */
   .glass,
   .glass-card {
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
   }
 
-  * {
-    animation-duration: 0.4s !important;
-    transition-duration: 0.25s !important;
+  /* Prevent horizontal movement */
+  [class*="translate-x"],
+  [class*="-translate-x"],
+  [class*="translate-y"] {
+    max-width: 100%;
   }
 
-  .animate-float,
-  .animate-gradient,
-  .animate-shimmer,
-  .animate-fire {
-    animation: none !important;
-  }
-
-  body {
-    transform: translateZ(0);
-    will-change: auto;
+  /* Better responsive images */
+  img {
+    object-fit: cover;
   }
 }
+
