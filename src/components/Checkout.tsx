@@ -218,16 +218,3 @@ export default function Checkout({ onBack, onOrderSuccess }: CheckoutProps) {
 https://ik.imagekit.io/n9fgagbyoz/IMG_6963.MP4
 https://ik.imagekit.io/n9fgagbyoz/Scene%20Builder%20-%20Create%20a%20cinematic%20luxury%20fashion%20promo%20video%20from%20the%20uploaded%20image_The%20vide.mp4
 */
-
-/* Product videos injected */
-
-<div className="product-video-showcase">
-  <video controls playsInline preload="metadata" style={{width:'100%',borderRadius:'24px',marginTop:'20px'}} poster="">
-    <source src="https://ik.imagekit.io/n9fgagbyoz/IMG_6963.MP4" type="video/mp4" />
-  </video>
-
-  <video controls playsInline preload="metadata" style={{width:'100%',borderRadius:'24px',marginTop:'20px'}} poster="">
-    <source src="https://ik.imagekit.io/n9fgagbyoz/Scene%20Builder%20-%20Create%20a%20cinematic%20luxury%20fashion%20promo%20video%20from%20the%20uploaded%20image_The%20vide.mp4" type="video/mp4" />
-  </video>
-</div>
-
