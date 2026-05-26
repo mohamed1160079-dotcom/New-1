@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { LanguageProvider, useLang } from './context/LanguageContext';
 import { CartProvider, useCart, Product } from './context/CartContext';
 import { products } from './data/products';
@@ -34,36 +33,36 @@ function AppContent() {
   const handlePageChange = (page: string) => {
     setCurrentPage(page);
     setSelectedProduct(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   const handleCheckout = () => {
     setCartOpen(false);
     setCurrentPage('checkout');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   const handleOrderSuccess = () => {
     setCurrentPage('orderSuccess');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setCurrentPage('productDetails');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   const handleBackFromProduct = () => {
     setSelectedProduct(null);
     setCurrentPage('shop');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   const handleBuyNow = () => {
     setSelectedProduct(null);
     setCurrentPage('checkout');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   const showHeader = !['orderSuccess'].includes(currentPage);
@@ -71,7 +70,7 @@ function AppContent() {
   const showBottomNav = !['checkout', 'orderSuccess', 'productDetails'].includes(currentPage);
 
   return (
-    <div className="min-h-screen bg-[#FFF8F0]">
+    <div className="min-h-screen bg-[#FFF8F0] overflow-x-hidden w-full">
       <SplashScreen isVisible={showSplash} />
 
       {showHeader && (
@@ -82,7 +81,7 @@ function AppContent() {
         />
       )}
 
-      <AnimatePresence mode="wait">
+      <>
         {/* Home Page */}
         {currentPage === 'home' && (
           <main key="home">
@@ -160,7 +159,7 @@ function AppContent() {
         {currentPage === 'orderSuccess' && (
           <OrderSuccess key="orderSuccess" onBackHome={() => handlePageChange('home')} />
         )}
-      </AnimatePresence>
+      </>
 
       {showFooter && <Footer onPageChange={handlePageChange} />}
 

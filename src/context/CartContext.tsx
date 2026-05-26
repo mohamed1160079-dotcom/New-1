@@ -47,6 +47,7 @@ export interface Product {
     en: string;
   };
   customReviews?: ProductReview[];
+  videos?: string[];
 }
 
 export interface CartItem {

@@ -38,8 +38,12 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
   const wishlisted = isInWishlist(product.id);
   const discount = product.oldPrice ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100) : 0;
 
-  // Use product images or fallback
+  // Build media array: images first, then videos
   const images = product.images || [product.image];
+  const media: { type: 'image' | 'video'; src: string }[] = [
+    ...images.map(src => ({ type: 'image' as const, src })),
+    ...(product.videos || []).map(src => ({ type: 'video' as const, src })),
+  ];
 
   const relatedProducts = products
     .filter(p => p.category === product.category && p.id !== product.id)
@@ -49,22 +53,24 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
   const handleColorSelect = (color: ProductColor) => {
     setSelectedColor(color);
     if (color.image) {
-      const idx = images.findIndex(img => img === color.image);
+      const idx = media.findIndex(m => m.type === 'image' && m.src === color.image);
       setSelectedImage(idx !== -1 ? idx : 0);
     }
   };
 
   const handlePrevImage = () => {
-    setSelectedImage(prev => (prev > 0 ? prev - 1 : images.length - 1));
+    setSelectedImage(prev => (prev > 0 ? prev - 1 : media.length - 1));
   };
 
   const handleNextImage = () => {
-    setSelectedImage(prev => (prev < images.length - 1 ? prev + 1 : 0));
+    setSelectedImage(prev => (prev < media.length - 1 ? prev + 1 : 0));
   };
 
   const handleThumbnailClick = (index: number) => {
     setSelectedImage(index);
   };
+
+  const currentMedia = media[selectedImage] || media[0];
 
   const handleAddToCart = () => {
     addToCart(product, quantity, selectedSize, selectedColor?.nameEn);
@@ -92,7 +98,7 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-gradient-to-b from-white to-pink-50/30"
+      className="min-h-screen bg-gradient-to-b from-white to-pink-50/30 overflow-x-hidden"
     >
       {/* Breadcrumb / Back Navigation */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-pink-50">
@@ -124,22 +130,35 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Images Section */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            {/* Main Image */}
+            {/* Main Image / Video */}
             <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br from-pink-50 to-rose-50 mb-4 shadow-lg shadow-pink-100/30">
-              <motion.img
-                key={images[selectedImage]}
-                initial={{ opacity: 0, scale: 1.02 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4 }}
-                src={images[selectedImage]}
-                alt={name}
-                className="w-full aspect-[4/5] object-cover cursor-zoom-in"
-                onClick={() => setShowZoom(true)}
-              />
+              {currentMedia.type === 'video' ? (
+                <video
+                  key={currentMedia.src}
+                  src={currentMedia.src}
+                  className="w-full aspect-[4/5] object-cover"
+                  controls
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                />
+              ) : (
+                <motion.img
+                  key={currentMedia.src}
+                  initial={{ opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4 }}
+                  src={currentMedia.src}
+                  alt={name}
+                  className="w-full aspect-[4/5] object-cover cursor-zoom-in"
+                  onClick={() => setShowZoom(true)}
+                />
+              )}
               
               {/* Premium Border Glow */}
               <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border-2 border-white/50 pointer-events-none" />
@@ -148,8 +167,8 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
               <div className="absolute top-4 left-4 flex flex-col gap-2">
                 {product.badge && (
                   <motion.span 
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
                     className="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] font-bold rounded-full shadow-lg uppercase tracking-wide"
                   >
                     {lang === 'ar' ? product.badgeAr : product.badge}
@@ -157,8 +176,8 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
                 )}
                 {discount > 0 && (
                   <motion.span 
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.1 }}
                     className="px-3 py-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full shadow-lg"
                   >
@@ -167,16 +186,18 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
                 )}
               </div>
 
-              {/* Zoom Button */}
-              <button
-                onClick={() => setShowZoom(true)}
-                className="absolute bottom-4 right-4 w-11 h-11 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg hover:bg-white transition-colors cursor-pointer hover:scale-105"
-              >
-                <ZoomIn size={20} className="text-gray-600" />
-              </button>
+              {/* Zoom Button — only for images */}
+              {currentMedia.type === 'image' && (
+                <button
+                  onClick={() => setShowZoom(true)}
+                  className="absolute bottom-4 right-4 w-11 h-11 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg hover:bg-white transition-colors cursor-pointer hover:scale-105"
+                >
+                  <ZoomIn size={20} className="text-gray-600" />
+                </button>
+              )}
 
               {/* Navigation Arrows */}
-              {images.length > 1 && (
+              {media.length > 1 && (
                 <>
                   <button
                     onClick={handlePrevImage}
@@ -195,19 +216,30 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
             </div>
 
             {/* Thumbnails */}
-            {images.length > 1 && (
+            {media.length > 1 && (
               <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                {images.map((img, i) => (
+                {media.map((item, i) => (
                   <button
                     key={i}
                     onClick={() => handleThumbnailClick(i)}
-                    className={`flex-shrink-0 w-20 h-24 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                    className={`flex-shrink-0 w-20 h-24 rounded-xl overflow-hidden border-2 transition-all cursor-pointer relative ${
                       selectedImage === i 
                         ? 'border-pink-500 shadow-lg shadow-pink-200/50 scale-105' 
                         : 'border-white/80 opacity-70 hover:opacity-100 hover:border-pink-200'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    {item.type === 'video' ? (
+                      <>
+                        <video src={item.src} className="w-full h-full object-cover" muted preload="metadata" />
+                        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                          <div className="w-7 h-7 bg-white/90 rounded-full flex items-center justify-center">
+                            <div className="w-0 h-0 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent border-l-[8px] border-l-pink-500 ml-0.5" />
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <img src={item.src} alt="" className="w-full h-full object-cover" />
+                    )}
                   </button>
                 ))}
               </div>
@@ -252,8 +284,8 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
 
           {/* Details Section */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="flex flex-col"
           >
@@ -302,8 +334,8 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
               )}
               {discount > 0 && (
                 <motion.span 
-                  initial={{ x: -10, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
                   className="px-4 py-1.5 bg-green-50 text-green-600 text-sm font-bold rounded-full border border-green-100"
                 >
                   {isRTL ? `وفري ${product.oldPrice! - product.price} ج.م` : `Save ${product.oldPrice! - product.price} EGP`}
@@ -663,7 +695,7 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
 
       {/* Zoom Modal */}
       <AnimatePresence>
-        {showZoom && (
+        {showZoom && currentMedia.type === 'image' && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -681,14 +713,14 @@ export default function ProductDetails({ product, onBack, onQuickView, onBuyNow 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              src={images[selectedImage]}
+              src={currentMedia.src}
               alt={name}
               className="max-w-full max-h-full object-contain p-4"
             />
             {/* Zoom Navigation */}
-            {images.length > 1 && (
+            {media.length > 1 && (
               <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
-                {images.map((_, i) => (
+                {media.map((_, i) => (
                   <button
                     key={i}
                     onClick={(e) => { e.stopPropagation(); setSelectedImage(i); }}
