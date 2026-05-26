@@ -77,3 +77,8 @@ export default function Categories({ onCategoryClick }: CategoriesProps) {
     </section>
   );
 }
+
+/* Product 3 videos added manually:
+https://ik.imagekit.io/n9fgagbyoz/IMG_6963.MP4
+https://ik.imagekit.io/n9fgagbyoz/Scene%20Builder%20-%20Create%20a%20cinematic%20luxury%20fashion%20promo%20video%20from%20the%20uploaded%20image_The%20vide.mp4
+*/

@@ -109,10 +109,6 @@ export const products: Product[] = [
       { nameAr: 'أوف وايت', nameEn: 'Off White', hex: '#FAF9F6', image: 'https://ik.imagekit.io/n9fgagbyoz/%D9%81%D8%B3%D8%AA%D8%A7%D9%86/photo_2026-05-26_02-50-04.jpg' },
     ],
     material: { ar: 'قماش مستورد عالي الجودة', en: 'High-quality imported fabric' },
-    videos: [
-      'https://ik.imagekit.io/n9fgagbyoz/Scene%20Builder%20-%20Create%20a%20cinematic%20luxury%20fashion%20promo%20video%20from%20the%20uploaded%20image_The%20vide.mp4',
-      'https://ik.imagekit.io/n9fgagbyoz/IMG_6963.MP4',
-    ],
     customReviews: [
       { id: 1, name: 'Mariam Hassan', nameAr: 'مريم حسن', date: '2026-01-18', rating: 5, text: 'الفستان تحفة والخامة حلوة جداً، لبسته في فرح وكل الناس سألتني عليه', textEn: 'The dress is amazing and the fabric is so nice, I wore it to a wedding and everyone asked about it', verified: true },
       { id: 2, name: 'Dina Samir', nameAr: 'دينا سمير', date: '2026-01-12', rating: 5, text: 'أنيق جداً وشكله زي الصور بالظبط، شكراً ليكم', textEn: 'Very elegant and looks exactly like the photos, thank you', verified: true },
@@ -167,3 +163,8 @@ export const governoratesWithCities: Record<string, string[]> = {
 };
 
 export const governorates = Object.keys(governoratesWithCities);
+
+/* Product 3 videos added manually:
+https://ik.imagekit.io/n9fgagbyoz/IMG_6963.MP4
+https://ik.imagekit.io/n9fgagbyoz/Scene%20Builder%20-%20Create%20a%20cinematic%20luxury%20fashion%20promo%20video%20from%20the%20uploaded%20image_The%20vide.mp4
+*/

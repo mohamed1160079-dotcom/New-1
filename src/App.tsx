@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { LanguageProvider, useLang } from './context/LanguageContext';
 import { CartProvider, useCart, Product } from './context/CartContext';
 import { products } from './data/products';
@@ -33,36 +34,36 @@ function AppContent() {
   const handlePageChange = (page: string) => {
     setCurrentPage(page);
     setSelectedProduct(null);
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCheckout = () => {
     setCartOpen(false);
     setCurrentPage('checkout');
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOrderSuccess = () => {
     setCurrentPage('orderSuccess');
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setCurrentPage('productDetails');
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackFromProduct = () => {
     setSelectedProduct(null);
     setCurrentPage('shop');
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBuyNow = () => {
     setSelectedProduct(null);
     setCurrentPage('checkout');
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const showHeader = !['orderSuccess'].includes(currentPage);
@@ -70,7 +71,7 @@ function AppContent() {
   const showBottomNav = !['checkout', 'orderSuccess', 'productDetails'].includes(currentPage);
 
   return (
-    <div className="min-h-screen bg-[#FFF8F0] overflow-x-hidden w-full">
+    <div className="min-h-screen bg-[#FFF8F0]">
       <SplashScreen isVisible={showSplash} />
 
       {showHeader && (
@@ -81,7 +82,7 @@ function AppContent() {
         />
       )}
 
-      <>
+      <AnimatePresence mode="wait">
         {/* Home Page */}
         {currentPage === 'home' && (
           <main key="home">
@@ -159,7 +160,7 @@ function AppContent() {
         {currentPage === 'orderSuccess' && (
           <OrderSuccess key="orderSuccess" onBackHome={() => handlePageChange('home')} />
         )}
-      </>
+      </AnimatePresence>
 
       {showFooter && <Footer onPageChange={handlePageChange} />}
 
@@ -274,3 +275,8 @@ export default function App() {
     </LanguageProvider>
   );
 }
+
+/* Product 3 videos added manually:
+https://ik.imagekit.io/n9fgagbyoz/IMG_6963.MP4
+https://ik.imagekit.io/n9fgagbyoz/Scene%20Builder%20-%20Create%20a%20cinematic%20luxury%20fashion%20promo%20video%20from%20the%20uploaded%20image_The%20vide.mp4
+*/

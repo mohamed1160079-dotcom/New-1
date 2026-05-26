@@ -14,13 +14,25 @@ export default function Hero({ onShopNow }: HeroProps) {
       {/* Background */}
       <div className="absolute inset-0 hero-gradient" />
       
-      {/* Decorative blobs — contained inside section via overflow-hidden */}
+      {/* Decorative Elements */}
       <div className="absolute top-10 right-5 w-48 sm:w-72 h-48 sm:h-72 bg-pink-200/30 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-10 left-5 w-64 sm:w-80 h-64 sm:h-80 bg-rose-200/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-10 left-5 w-64 sm:w-96 h-64 sm:h-96 bg-rose-200/20 rounded-full blur-3xl" />
+      
+      {/* Floating circles - Hidden on small mobile */}
+      <motion.div 
+        animate={{ y: [-8, 8, -8] }} 
+        transition={{ duration: 4, repeat: Infinity }}
+        className="hidden sm:block absolute top-24 right-[20%] w-3 h-3 rounded-full bg-pink-300/40"
+      />
+      <motion.div 
+        animate={{ y: [8, -8, 8] }} 
+        transition={{ duration: 5, repeat: Infinity }}
+        className="hidden sm:block absolute top-40 left-[15%] w-2.5 h-2.5 rounded-full bg-rose-300/50"
+      />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center min-h-[480px] sm:min-h-[560px] lg:min-h-[620px] py-8 sm:py-10 gap-6 lg:gap-10">
-          {/* Text */}
+          {/* Text Content */}
           <div className={`flex-1 text-center lg:text-start ${isRTL ? 'lg:text-right' : 'lg:text-left'} order-2 lg:order-1`}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -31,7 +43,7 @@ export default function Hero({ onShopNow }: HeroProps) {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/70 rounded-full text-pink-600 text-[11px] sm:text-xs font-medium mb-4 sm:mb-5 border border-pink-100 shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/70 backdrop-blur-sm rounded-full text-pink-600 text-[11px] sm:text-xs font-medium mb-4 sm:mb-5 border border-pink-100 shadow-sm"
               >
                 <Sparkles size={14} className="text-pink-400" />
                 {t('hero.subtitle')}
@@ -65,14 +77,14 @@ export default function Hero({ onShopNow }: HeroProps) {
               >
                 <button 
                   onClick={onShopNow}
-                  className="group w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 text-white rounded-xl sm:rounded-2xl font-semibold text-sm shadow-xl shadow-pink-200/40 hover:shadow-pink-300/50 transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
+                  className="group w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 text-white rounded-xl sm:rounded-2xl font-semibold text-sm shadow-xl shadow-pink-200/40 hover:shadow-pink-300/50 transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center gap-2 overflow-hidden"
                 >
                   <span>{t('hero.shopNow')}</span>
                   {isRTL ? <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" /> : <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />}
                 </button>
                 <button 
                   onClick={onShopNow}
-                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 bg-white/80 border border-pink-200 text-pink-600 rounded-xl sm:rounded-2xl font-semibold text-sm hover:bg-pink-50 hover:border-pink-300 transition-all duration-300 cursor-pointer"
+                  className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 bg-white/80 backdrop-blur-sm border border-pink-200 text-pink-600 rounded-xl sm:rounded-2xl font-semibold text-sm hover:bg-pink-50 hover:border-pink-300 transition-all duration-300"
                 >
                   {t('hero.newArrivals')}
                 </button>
@@ -118,8 +130,12 @@ export default function Hero({ onShopNow }: HeroProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-pink-500/15 to-transparent" />
               </div>
 
-              {/* Floating Card 1 — kept inside parent bounds */}
-              <div className={`absolute -bottom-2 ${isRTL ? 'right-0' : 'left-0'} bg-white rounded-xl sm:rounded-2xl shadow-xl shadow-pink-100/40 p-2.5 sm:p-3 border border-pink-50`}>
+              {/* Floating Card 1 */}
+              <motion.div 
+                animate={{ y: [-4, 4, -4] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className={`absolute -bottom-3 sm:-bottom-4 ${isRTL ? '-right-2 sm:-right-6' : '-left-2 sm:-left-6'} bg-white rounded-xl sm:rounded-2xl shadow-xl shadow-pink-100/40 p-2.5 sm:p-3 border border-pink-50`}
+              >
                 <div className="flex items-center gap-2 sm:gap-2.5">
                   <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg sm:rounded-xl flex items-center justify-center text-white text-sm sm:text-base">✓</div>
                   <div>
@@ -127,10 +143,14 @@ export default function Hero({ onShopNow }: HeroProps) {
                     <div className="text-[10px] sm:text-xs font-bold text-gray-700">{isRTL ? '2-4 أيام' : '2-4 Days'}</div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Floating Card 2 — kept inside parent bounds */}
-              <div className={`absolute top-4 sm:top-6 ${isRTL ? 'left-0' : 'right-0'} bg-white rounded-xl sm:rounded-2xl shadow-xl shadow-pink-100/40 p-2 sm:p-2.5 border border-pink-50`}>
+              {/* Floating Card 2 */}
+              <motion.div 
+                animate={{ y: [4, -4, 4] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className={`absolute top-4 sm:top-6 ${isRTL ? '-left-2 sm:-left-6' : '-right-2 sm:-right-6'} bg-white rounded-xl sm:rounded-2xl shadow-xl shadow-pink-100/40 p-2 sm:p-2.5 border border-pink-50`}
+              >
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <span className="text-xl sm:text-2xl">🇪🇬</span>
                   <div>
@@ -138,7 +158,7 @@ export default function Hero({ onShopNow }: HeroProps) {
                     <div className="text-[9px] sm:text-[10px] font-bold text-gray-700">{isRTL ? 'محافظات مصر' : 'All Egypt'}</div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -146,3 +166,8 @@ export default function Hero({ onShopNow }: HeroProps) {
     </section>
   );
 }
+
+/* Product 3 videos added manually:
+https://ik.imagekit.io/n9fgagbyoz/IMG_6963.MP4
+https://ik.imagekit.io/n9fgagbyoz/Scene%20Builder%20-%20Create%20a%20cinematic%20luxury%20fashion%20promo%20video%20from%20the%20uploaded%20image_The%20vide.mp4
+*/

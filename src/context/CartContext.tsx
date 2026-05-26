@@ -47,7 +47,6 @@ export interface Product {
     en: string;
   };
   customReviews?: ProductReview[];
-  videos?: string[];
 }
 
 export interface CartItem {
@@ -136,3 +135,8 @@ export function useCart() {
   if (!context) throw new Error('useCart must be used within CartProvider');
   return context;
 }
+
+/* Product 3 videos added manually:
+https://ik.imagekit.io/n9fgagbyoz/IMG_6963.MP4
+https://ik.imagekit.io/n9fgagbyoz/Scene%20Builder%20-%20Create%20a%20cinematic%20luxury%20fashion%20promo%20video%20from%20the%20uploaded%20image_The%20vide.mp4
+*/
