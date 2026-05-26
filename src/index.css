@@ -314,7 +314,7 @@ body,
 #root {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden !important;
+  overflow-x:hidden;
   position: relative;
 }
 
@@ -352,7 +352,7 @@ footer {
 @media (max-width: 768px) {
 
   body {
-    overflow-x: hidden !important;
+    overflow-x:hidden;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -515,10 +515,10 @@ section,
 /* ===== ULTRA PERFORMANCE FIX ===== */
 
 html,body{
-  overflow-x:hidden !important;
+  overflow-x:hidden;
   scroll-behavior:smooth;
   -webkit-overflow-scrolling:touch;
-  overscroll-behavior:none;
+  
 }
 
 *{
@@ -569,3 +569,25 @@ video{
 
 }
 
+
+
+html,body,#root{
+  height:auto !important;
+  min-height:100%;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch;
+}
+
+body{
+  position:relative !important;
+  touch-action:auto !important;
+}
+
+@media(max-width:768px){
+  html,body{
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    -webkit-overflow-scrolling:touch;
+  }
+}
