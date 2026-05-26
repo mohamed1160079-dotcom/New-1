@@ -37,8 +37,6 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
-  overflow-y: auto;
-  height: 100%;
 }
 
 body {
@@ -46,8 +44,6 @@ body {
   background: #FFF8F0;
   color: #2D2D2D;
   overflow-x: hidden;
-  overflow-y: auto;
-  min-height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.7;
@@ -219,7 +215,16 @@ input:focus, select:focus, textarea:focus {
 
 /* Prevent Overscroll */
 html, body {
-  overscroll-behavior: none;
+  overscroll-behavior-y: auto;
+  overscroll-behavior-x: none;
+  width: 100%;
+  min-height: 100%;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+body {
+  position: relative;
 }
 
 /* Mobile Scrollbar */
@@ -299,10 +304,4 @@ img {
 .progress-bar {
   background: linear-gradient(90deg, #f472b6, #ec4899, #db2777);
   animation: progress-fill 1.5s ease-out forwards;
-}
-
-
-#root {
-  min-height: 100%;
-  overflow-x: hidden;
 }
